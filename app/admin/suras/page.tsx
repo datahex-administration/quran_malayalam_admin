@@ -36,6 +36,7 @@ export default function SurasPage() {
   const [suras, setSuras] = useState<Sura[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [verificationStatus, setVerificationStatus] = useState('');
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState({ total: 0, pages: 1 });
   const [user, setUser] = useState<UserSession | null>(null);
@@ -53,7 +54,7 @@ export default function SurasPage() {
 
   useEffect(() => {
     fetchSuras();
-  }, [page, search]);
+  }, [page, search, verificationStatus]);
 
   const fetchSuras = async () => {
     try {
@@ -62,6 +63,7 @@ export default function SurasPage() {
         page: page.toString(),
         limit: '10',
         ...(search && { search }),
+        ...(verificationStatus !== '' && { isVerified: verificationStatus }),
       });
       const res = await fetch(`/api/suras?${params}`);
       const data = await res.json();
@@ -114,20 +116,36 @@ export default function SurasPage() {
         </Link>
       </div>
 
-      {/* Search */}
+      {/* Search & Filters */}
       <div className="bg-white rounded-xl shadow-sm p-4 mb-6">
-        <div className="relative">
-          <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search suras..."
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setPage(1);
-            }}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-          />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="relative">
+            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search suras..."
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            />
+          </div>
+          <div>
+            <select
+              value={verificationStatus}
+              onChange={(e) => {
+                setVerificationStatus(e.target.value);
+                setPage(1);
+              }}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            >
+              <option value="">All Statuses</option>
+              <option value="false">Pending</option>
+              <option value="true">Verified</option>
+            </select>
+          </div>
         </div>
       </div>
 

@@ -15,13 +15,18 @@ export async function GET(request: NextRequest) {
     const suraNumber = searchParams.get('suraNumber');
     const language = searchParams.get('language');
 
+    const isVerifiedParam = searchParams.get('isVerified');
+
     const query: any = {};
     if (suraNumber) query.suraNumber = parseInt(suraNumber);
     if (language) query.language = language;
+    if (isVerifiedParam !== null && isVerifiedParam !== '') {
+      query.isVerified = isVerifiedParam === 'true';
+    }
 
     const total = await Translation.countDocuments(query);
     const translations = await Translation.find(query)
-      .sort({ suraNumber: 1, ayaRangeStart: 1 })
+      .sort({ isVerified: 1, suraNumber: 1, ayaRangeStart: 1 })
       .skip((page - 1) * limit)
       .limit(limit)
       .lean();

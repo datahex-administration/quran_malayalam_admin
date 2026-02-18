@@ -15,13 +15,18 @@ export async function GET(request: NextRequest) {
     const suraNumber = searchParams.get('suraNumber');
     const language = searchParams.get('language');
 
+    const isVerifiedParam = searchParams.get('isVerified');
+
     const query: any = {};
     if (suraNumber) query.suraNumber = parseInt(suraNumber);
     if (language) query.language = language;
+    if (isVerifiedParam !== null && isVerifiedParam !== '') {
+      query.isVerified = isVerifiedParam === 'true';
+    }
 
     const total = await Interpretation.countDocuments(query);
     const interpretations = await Interpretation.find(query)
-      .sort({ suraNumber: 1, interpretationNumber: 1 })
+      .sort({ isVerified: 1, suraNumber: 1, interpretationNumber: 1 })
       .skip((page - 1) * limit)
       .limit(limit)
       .lean();

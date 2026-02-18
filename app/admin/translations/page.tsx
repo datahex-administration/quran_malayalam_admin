@@ -41,6 +41,7 @@ export default function TranslationsPage() {
   const [filters, setFilters] = useState({
     suraNumber: '',
     language: '',
+    verificationStatus: '',
   });
 
   useEffect(() => {
@@ -65,6 +66,7 @@ export default function TranslationsPage() {
         limit: '10',
         ...(filters.suraNumber && { suraNumber: filters.suraNumber }),
         ...(filters.language && { language: filters.language }),
+        ...(filters.verificationStatus !== '' && { isVerified: filters.verificationStatus }),
       });
       const res = await fetch(`/api/translations?${params}`);
       const data = await res.json();
@@ -123,7 +125,7 @@ export default function TranslationsPage() {
           <FiFilter className="w-4 h-4 text-gray-500" />
           <span className="text-sm font-medium text-gray-700">Filters</span>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
             <input
               type="number"
@@ -148,6 +150,20 @@ export default function TranslationsPage() {
               <option value="">All Languages</option>
               <option value="Malayalam">Malayalam</option>
               <option value="English">English</option>
+            </select>
+          </div>
+          <div>
+            <select
+              value={filters.verificationStatus}
+              onChange={(e) => {
+                setFilters({ ...filters, verificationStatus: e.target.value });
+                setPage(1);
+              }}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            >
+              <option value="">All Statuses</option>
+              <option value="false">Pending</option>
+              <option value="true">Verified</option>
             </select>
           </div>
         </div>

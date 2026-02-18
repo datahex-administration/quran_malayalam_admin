@@ -14,6 +14,8 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '20');
     const search = searchParams.get('search') || '';
 
+    const isVerifiedParam = searchParams.get('isVerified');
+
     const query: any = {};
     if (search) {
       query.$or = [
@@ -22,10 +24,13 @@ export async function GET(request: NextRequest) {
         { description: { $regex: search, $options: 'i' } },
       ];
     }
+    if (isVerifiedParam !== null && isVerifiedParam !== '') {
+      query.isVerified = isVerifiedParam === 'true';
+    }
 
     const total = await Sura.countDocuments(query);
     const suras = await Sura.find(query)
-      .sort({ suraNumber: 1 })
+      .sort({ isVerified: 1, suraNumber: 1 })
       .skip((page - 1) * limit)
       .limit(limit)
       .lean();
