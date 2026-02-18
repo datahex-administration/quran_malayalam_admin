@@ -14,8 +14,9 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '20');
     const suraNumber = searchParams.get('suraNumber');
     const language = searchParams.get('language');
-
     const isVerifiedParam = searchParams.get('isVerified');
+    const sortBy = searchParams.get('sortBy') || 'suraNumber';
+    const sortOrder = searchParams.get('sortOrder') === 'desc' ? -1 : 1;
 
     const query: any = {};
     if (suraNumber) query.suraNumber = parseInt(suraNumber);
@@ -24,9 +25,15 @@ export async function GET(request: NextRequest) {
       query.isVerified = isVerifiedParam === 'true';
     }
 
+    const sortObj: any = {};
+    if (!isVerifiedParam) sortObj.isVerified = 1;
+    sortObj[sortBy] = sortOrder;
+    if (sortBy !== 'suraNumber') sortObj.suraNumber = 1;
+    if (sortBy !== 'ayaRangeStart') sortObj.ayaRangeStart = 1;
+
     const total = await Translation.countDocuments(query);
     const translations = await Translation.find(query)
-      .sort({ isVerified: 1, suraNumber: 1, ayaRangeStart: 1 })
+      .sort(sortObj)
       .skip((page - 1) * limit)
       .limit(limit)
       .lean();

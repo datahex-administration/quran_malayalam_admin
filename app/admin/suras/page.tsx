@@ -10,6 +10,8 @@ import {
   FiSearch,
   FiChevronLeft,
   FiChevronRight,
+  FiChevronUp,
+  FiChevronDown,
 } from 'react-icons/fi';
 
 interface Sura {
@@ -41,6 +43,23 @@ export default function SurasPage() {
   const [pagination, setPagination] = useState({ total: 0, pages: 1 });
   const [user, setUser] = useState<UserSession | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [sort, setSort] = useState({ by: 'suraNumber', order: 'asc' });
+
+  const handleSort = (field: string) => {
+    setSort((prev) =>
+      prev.by === field
+        ? { by: field, order: prev.order === 'asc' ? 'desc' : 'asc' }
+        : { by: field, order: 'asc' }
+    );
+    setPage(1);
+  };
+
+  const SortIcon = ({ field }: { field: string }) => {
+    if (sort.by !== field) return <FiChevronDown className="w-3 h-3 opacity-30" />;
+    return sort.order === 'asc'
+      ? <FiChevronUp className="w-3 h-3" />
+      : <FiChevronDown className="w-3 h-3" />;
+  };
 
   useEffect(() => {
     fetch('/api/auth/session')
@@ -54,7 +73,7 @@ export default function SurasPage() {
 
   useEffect(() => {
     fetchSuras();
-  }, [page, search, verificationStatus]);
+  }, [page, search, verificationStatus, sort]);
 
   const fetchSuras = async () => {
     try {
@@ -64,6 +83,8 @@ export default function SurasPage() {
         limit: '10',
         ...(search && { search }),
         ...(verificationStatus !== '' && { isVerified: verificationStatus }),
+        sortBy: sort.by,
+        sortOrder: sort.order,
       });
       const res = await fetch(`/api/suras?${params}`);
       const data = await res.json();
@@ -155,23 +176,41 @@ export default function SurasPage() {
           <table className="w-full">
             <thead className="bg-gray-50 border-b">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  #
+                <th
+                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer select-none hover:bg-gray-100"
+                  onClick={() => handleSort('suraNumber')}
+                >
+                  <span className="inline-flex items-center gap-1"># <SortIcon field="suraNumber" /></span>
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Name
+                <th
+                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer select-none hover:bg-gray-100"
+                  onClick={() => handleSort('name')}
+                >
+                  <span className="inline-flex items-center gap-1">Name <SortIcon field="name" /></span>
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Ayath
+                <th
+                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer select-none hover:bg-gray-100"
+                  onClick={() => handleSort('ayathCount')}
+                >
+                  <span className="inline-flex items-center gap-1">Ayath <SortIcon field="ayathCount" /></span>
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Place
+                <th
+                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer select-none hover:bg-gray-100"
+                  onClick={() => handleSort('place')}
+                >
+                  <span className="inline-flex items-center gap-1">Place <SortIcon field="place" /></span>
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
+                <th
+                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer select-none hover:bg-gray-100"
+                  onClick={() => handleSort('isVerified')}
+                >
+                  <span className="inline-flex items-center gap-1">Status <SortIcon field="isVerified" /></span>
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Created By
+                <th
+                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer select-none hover:bg-gray-100"
+                  onClick={() => handleSort('createdBy')}
+                >
+                  <span className="inline-flex items-center gap-1">Created By <SortIcon field="createdBy" /></span>
                 </th>
                 <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions

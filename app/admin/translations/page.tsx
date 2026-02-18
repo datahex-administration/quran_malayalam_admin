@@ -10,6 +10,8 @@ import {
   FiFilter,
   FiChevronLeft,
   FiChevronRight,
+  FiChevronUp,
+  FiChevronDown,
 } from 'react-icons/fi';
 
 interface Translation {
@@ -43,6 +45,23 @@ export default function TranslationsPage() {
     language: '',
     verificationStatus: '',
   });
+  const [sort, setSort] = useState({ by: 'suraNumber', order: 'asc' });
+
+  const handleSort = (field: string) => {
+    setSort((prev) =>
+      prev.by === field
+        ? { by: field, order: prev.order === 'asc' ? 'desc' : 'asc' }
+        : { by: field, order: 'asc' }
+    );
+    setPage(1);
+  };
+
+  const SortIcon = ({ field }: { field: string }) => {
+    if (sort.by !== field) return <FiChevronDown className="w-3 h-3 opacity-30" />;
+    return sort.order === 'asc'
+      ? <FiChevronUp className="w-3 h-3" />
+      : <FiChevronDown className="w-3 h-3" />;
+  };
 
   useEffect(() => {
     fetch('/api/auth/session')
@@ -56,7 +75,7 @@ export default function TranslationsPage() {
 
   useEffect(() => {
     fetchTranslations();
-  }, [page, filters]);
+  }, [page, filters, sort]);
 
   const fetchTranslations = async () => {
     try {
@@ -67,6 +86,8 @@ export default function TranslationsPage() {
         ...(filters.suraNumber && { suraNumber: filters.suraNumber }),
         ...(filters.language && { language: filters.language }),
         ...(filters.verificationStatus !== '' && { isVerified: filters.verificationStatus }),
+        sortBy: sort.by,
+        sortOrder: sort.order,
       });
       const res = await fetch(`/api/translations?${params}`);
       const data = await res.json();
@@ -175,23 +196,38 @@ export default function TranslationsPage() {
           <table className="w-full">
             <thead className="bg-gray-50 border-b">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Sura
+                <th
+                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer select-none hover:bg-gray-100"
+                  onClick={() => handleSort('suraNumber')}
+                >
+                  <span className="inline-flex items-center gap-1">Sura <SortIcon field="suraNumber" /></span>
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Aya Range
+                <th
+                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer select-none hover:bg-gray-100"
+                  onClick={() => handleSort('ayaRangeStart')}
+                >
+                  <span className="inline-flex items-center gap-1">Aya Range <SortIcon field="ayaRangeStart" /></span>
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Language
+                <th
+                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer select-none hover:bg-gray-100"
+                  onClick={() => handleSort('language')}
+                >
+                  <span className="inline-flex items-center gap-1">Language <SortIcon field="language" /></span>
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Translation
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
+                <th
+                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer select-none hover:bg-gray-100"
+                  onClick={() => handleSort('isVerified')}
+                >
+                  <span className="inline-flex items-center gap-1">Status <SortIcon field="isVerified" /></span>
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Created By
+                <th
+                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer select-none hover:bg-gray-100"
+                  onClick={() => handleSort('createdBy')}
+                >
+                  <span className="inline-flex items-center gap-1">Created By <SortIcon field="createdBy" /></span>
                 </th>
                 <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
