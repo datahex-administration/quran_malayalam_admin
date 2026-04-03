@@ -8,6 +8,7 @@ import {
   FiPhone,
   FiHelpCircle,
   FiArrowRight,
+  FiLayers,
 } from 'react-icons/fi';
 
 const cards = [
@@ -31,6 +32,13 @@ const cards = [
     href: '/admin/interpretations',
     icon: FiMessageSquare,
     color: 'bg-purple-500',
+  },
+  {
+    title: 'Page Handlers',
+    description: 'Map Quran pages to surahs and ayah ranges',
+    href: '/admin/page-handlers',
+    icon: FiLayers,
+    color: 'bg-cyan-500',
   },
   {
     title: 'About Us',

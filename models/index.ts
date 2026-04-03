@@ -6,4 +6,5 @@ export { default as Author, type IAuthor } from './Author';
 export { default as ContactUs, type IContactUs } from './ContactUs';
 export { default as Help, type IHelp } from './Help';
 export { default as User, type IUser } from './User';
+export { default as PageHandler, type IPageHandler, type IPageEntry } from './PageHandler';
 export { default as AuditLog, type IAuditLog } from './AuditLog';

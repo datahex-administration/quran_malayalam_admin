@@ -47,6 +47,7 @@ export default function AuditPage() {
     'author',
     'contact',
     'help',
+    'pagehandler',
   ];
 
   const actions = ['create', 'update', 'delete', 'verify'];

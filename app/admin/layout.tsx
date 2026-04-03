@@ -17,6 +17,7 @@ import {
   FiCheckCircle,
   FiEdit,
   FiActivity,
+  FiLayers,
 } from 'react-icons/fi';
 
 interface UserSession {
@@ -28,6 +29,7 @@ const menuItems = [
   { name: 'Suras', href: '/admin/suras', icon: FiBook },
   { name: 'Translations', href: '/admin/translations', icon: FiFileText },
   { name: 'Interpretations', href: '/admin/interpretations', icon: FiMessageSquare },
+  { name: 'Page Handlers', href: '/admin/page-handlers', icon: FiLayers },
   { name: 'About Us', href: '/admin/about', icon: FiInfo },
   { name: 'Author', href: '/admin/author', icon: FiUser },
   { name: 'Contact Us', href: '/admin/contact', icon: FiPhone },
