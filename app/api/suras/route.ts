@@ -13,6 +13,9 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '20');
     const search = searchParams.get('search') || '';
+    const isVerifiedParam = searchParams.get('isVerified');
+    const sortBy = searchParams.get('sortBy') || 'suraNumber';
+    const sortOrder = searchParams.get('sortOrder') === 'desc' ? -1 : 1;
 
     const query: any = {};
     if (search) {
@@ -22,10 +25,18 @@ export async function GET(request: NextRequest) {
         { description: { $regex: search, $options: 'i' } },
       ];
     }
+    if (isVerifiedParam !== null && isVerifiedParam !== '') {
+      query.isVerified = isVerifiedParam === 'true';
+    }
+
+    const sortObj: any = {};
+    if (!isVerifiedParam) sortObj.isVerified = 1;
+    sortObj[sortBy] = sortOrder;
+    if (sortBy !== 'suraNumber') sortObj.suraNumber = 1;
 
     const total = await Sura.countDocuments(query);
     const suras = await Sura.find(query)
-      .sort({ suraNumber: 1 })
+      .sort(sortObj)
       .skip((page - 1) * limit)
       .limit(limit)
       .lean();

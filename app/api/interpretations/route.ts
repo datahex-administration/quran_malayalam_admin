@@ -14,14 +14,26 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '20');
     const suraNumber = searchParams.get('suraNumber');
     const language = searchParams.get('language');
+    const isVerifiedParam = searchParams.get('isVerified');
+    const sortBy = searchParams.get('sortBy') || 'suraNumber';
+    const sortOrder = searchParams.get('sortOrder') === 'desc' ? -1 : 1;
 
     const query: any = {};
     if (suraNumber) query.suraNumber = parseInt(suraNumber);
     if (language) query.language = language;
+    if (isVerifiedParam !== null && isVerifiedParam !== '') {
+      query.isVerified = isVerifiedParam === 'true';
+    }
+
+    const sortObj: any = {};
+    if (!isVerifiedParam) sortObj.isVerified = 1;
+    sortObj[sortBy] = sortOrder;
+    if (sortBy !== 'suraNumber') sortObj.suraNumber = 1;
+    if (sortBy !== 'interpretationNumber') sortObj.interpretationNumber = 1;
 
     const total = await Interpretation.countDocuments(query);
     const interpretations = await Interpretation.find(query)
-      .sort({ suraNumber: 1, interpretationNumber: 1 })
+      .sort(sortObj)
       .skip((page - 1) * limit)
       .limit(limit)
       .lean();
