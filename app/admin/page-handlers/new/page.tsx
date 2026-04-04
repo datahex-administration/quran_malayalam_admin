@@ -9,6 +9,8 @@ interface EntryForm {
   surahNumber: string;
   ayahFrom: string;
   ayahTo: string;
+  blockFrom: string;
+  blockTo: string;
 }
 
 export default function NewPageHandlerPage() {
@@ -17,11 +19,11 @@ export default function NewPageHandlerPage() {
   const [error, setError] = useState('');
   const [pageNo, setPageNo] = useState('');
   const [entries, setEntries] = useState<EntryForm[]>([
-    { surahNumber: '', ayahFrom: '', ayahTo: '' },
+    { surahNumber: '', ayahFrom: '', ayahTo: '', blockFrom: '', blockTo: '' },
   ]);
 
   const addEntry = () => {
-    setEntries([...entries, { surahNumber: '', ayahFrom: '', ayahTo: '' }]);
+    setEntries([...entries, { surahNumber: '', ayahFrom: '', ayahTo: '', blockFrom: '', blockTo: '' }]);
   };
 
   const removeEntry = (index: number) => {
@@ -50,6 +52,8 @@ export default function NewPageHandlerPage() {
             surahNumber: parseInt(entry.surahNumber),
             ayahFrom: parseInt(entry.ayahFrom),
             ayahTo: parseInt(entry.ayahTo),
+            blockFrom: parseInt(entry.blockFrom),
+            blockTo: parseInt(entry.blockTo),
           })),
         }),
       });
@@ -128,7 +132,7 @@ export default function NewPageHandlerPage() {
                   key={index}
                   className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200"
                 >
-                  <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="flex-1 grid grid-cols-1 sm:grid-cols-5 gap-3">
                     <div>
                       <label className="block text-xs font-medium text-gray-500 mb-1">
                         Surah Number
@@ -172,6 +176,38 @@ export default function NewPageHandlerPage() {
                         value={entry.ayahTo}
                         onChange={(e) =>
                           updateEntry(index, 'ayahTo', e.target.value)
+                        }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
+                        placeholder="To"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-500 mb-1">
+                        Block From
+                      </label>
+                      <input
+                        type="number"
+                        min="1"
+                        value={entry.blockFrom}
+                        onChange={(e) =>
+                          updateEntry(index, 'blockFrom', e.target.value)
+                        }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
+                        placeholder="From"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-500 mb-1">
+                        Block To
+                      </label>
+                      <input
+                        type="number"
+                        min="1"
+                        value={entry.blockTo}
+                        onChange={(e) =>
+                          updateEntry(index, 'blockTo', e.target.value)
                         }
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
                         placeholder="To"

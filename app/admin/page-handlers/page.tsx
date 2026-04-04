@@ -16,6 +16,8 @@ interface PageEntry {
   surahNumber: number;
   ayahFrom: number;
   ayahTo: number;
+  blockFrom: number;
+  blockTo: number;
 }
 
 interface PageHandler {
@@ -101,7 +103,7 @@ export default function PageHandlersPage() {
 
   const formatEntries = (entries: PageEntry[]) => {
     return entries.map((entry) => (
-      `Surah ${entry.surahNumber}: ${entry.ayahFrom}-${entry.ayahTo}`
+      `Surah ${entry.surahNumber}: A${entry.ayahFrom}-${entry.ayahTo} | B${entry.blockFrom}-${entry.blockTo}`
     )).join(' | ');
   };
 
@@ -188,7 +190,7 @@ export default function PageHandlersPage() {
                             key={idx}
                             className="inline-flex px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-700"
                           >
-                            Surah {entry.surahNumber}: {entry.ayahFrom}-{entry.ayahTo}
+                            Surah {entry.surahNumber}: A{entry.ayahFrom}-{entry.ayahTo} | B{entry.blockFrom}-{entry.blockTo}
                           </span>
                         ))}
                       </div>

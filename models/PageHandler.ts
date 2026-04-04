@@ -4,6 +4,8 @@ export interface IPageEntry {
   surahNumber: number;
   ayahFrom: number;
   ayahTo: number;
+  blockFrom: number;
+  blockTo: number;
 }
 
 export interface IPageHandler extends Document {
@@ -34,6 +36,16 @@ const PageEntrySchema = new Schema<IPageEntry>(
     ayahTo: {
       type: Number,
       required: [true, 'Ayah range end is required'],
+      min: 1,
+    },
+    blockFrom: {
+      type: Number,
+      required: [true, 'Block range start is required'],
+      min: 1,
+    },
+    blockTo: {
+      type: Number,
+      required: [true, 'Block range end is required'],
       min: 1,
     },
   },
