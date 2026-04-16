@@ -18,6 +18,12 @@ import {
   FiEdit,
   FiActivity,
   FiLayers,
+  FiAlignLeft,
+  FiType,
+  FiGrid,
+  FiList,
+  FiImage,
+  FiAlignCenter,
 } from 'react-icons/fi';
 
 interface UserSession {
@@ -30,6 +36,12 @@ const menuItems = [
   { name: 'Translations', href: '/admin/translations', icon: FiFileText },
   { name: 'Interpretations', href: '/admin/interpretations', icon: FiMessageSquare },
   { name: 'Page Handlers', href: '/admin/page-handlers', icon: FiLayers },
+  { name: 'Preface', href: '/admin/preface', icon: FiAlignLeft },
+  { name: 'Arabic Ayahs', href: '/admin/arabic-ayahs', icon: FiType },
+  { name: 'Hizb', href: '/admin/hizb', icon: FiGrid },
+  { name: 'Juzz', href: '/admin/juzz', icon: FiList },
+  { name: 'Tajweed Words', href: '/admin/tajweed-words', icon: FiImage },
+  { name: 'Chapter Descriptions', href: '/admin/chapter-descriptions', icon: FiAlignCenter },
   { name: 'About Us', href: '/admin/about', icon: FiInfo },
   { name: 'Author', href: '/admin/author', icon: FiUser },
   { name: 'Contact Us', href: '/admin/contact', icon: FiPhone },
