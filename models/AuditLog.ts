@@ -17,7 +17,11 @@ const AuditLogSchema = new Schema<IAuditLog>(
     contentType: {
       type: String,
       required: true,
-      enum: ['Sura', 'Translation', 'Interpretation', 'AboutUs', 'Author', 'ContactUs', 'Help', 'PageHandler'],
+      enum: [
+        'Sura', 'Translation', 'Interpretation', 'AboutUs', 'Author',
+        'ContactUs', 'Help', 'PageHandler', 'Preface', 'ArabicAyah',
+        'Hizb', 'Juzz', 'TajweedWord', 'ChapterDescription', 'TajweedRule',
+      ],
     },
     contentId: {
       type: String,

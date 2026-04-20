@@ -41,6 +41,7 @@ const menuItems = [
   { name: 'Hizb', href: '/admin/hizb', icon: FiGrid },
   { name: 'Juzz', href: '/admin/juzz', icon: FiList },
   { name: 'Tajweed Words', href: '/admin/tajweed-words', icon: FiImage },
+  { name: 'Tajweed Rules', href: '/admin/tajweed-rules', icon: FiEdit },
   { name: 'Chapter Descriptions', href: '/admin/chapter-descriptions', icon: FiAlignCenter },
   { name: 'About Us', href: '/admin/about', icon: FiInfo },
   { name: 'Author', href: '/admin/author', icon: FiUser },

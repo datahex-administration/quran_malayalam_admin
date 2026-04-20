@@ -14,3 +14,4 @@ export { default as Hizb, type IHizb } from './Hizb';
 export { default as Juzz, type IJuzz } from './Juzz';
 export { default as TajweedWord, type ITajweedWord } from './TajweedWord';
 export { default as ChapterDescription, type IChapterDescription } from './ChapterDescription';
+export { default as TajweedRule, type ITajweedRule } from './TajweedRule';
